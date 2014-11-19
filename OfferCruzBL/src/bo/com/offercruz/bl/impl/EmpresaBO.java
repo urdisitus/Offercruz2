@@ -43,6 +43,10 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
                 appendException(new BusinessExceptionMessage("La empresa '" + entity.getRazonSocial() + "' ya existe.", "nombre"));
             }
         }
+        
+        // VALIDAR FECHA
+        validar fecha
+                
     }
 
     @Override
