@@ -29,6 +29,8 @@ public class Empresa  implements java.io.Serializable {
      private String nit;
      private int tipoOferta;
      private String fax;
+     
+     private String correoElectronico;     
      private Set subscripcions = new HashSet(0);
      private Set categoriaempresas = new HashSet(0);
      private Set solicituds = new HashSet(0);
@@ -187,6 +189,16 @@ public class Empresa  implements java.io.Serializable {
     public void setFax(String fax) {
         this.fax = fax;
     }
+    
+       public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+    
+    
     public Set getSubscripcions() {
         return this.subscripcions;
     }

@@ -13,5 +13,5 @@ import bo.com.offercruz.entidades.Empresa;
  * @author Ernesto
  */
 public interface IEmpresaDAO extends  IDAOGenerico<Empresa, Integer>{
-    
+    Empresa obtenerPorNombre(String nombre);   
 }
