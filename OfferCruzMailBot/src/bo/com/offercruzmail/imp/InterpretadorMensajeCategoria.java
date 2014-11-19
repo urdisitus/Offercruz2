@@ -92,7 +92,7 @@ public class InterpretadorMensajeCategoria extends InterpretadorMensajeGenerico<
         preparPlantillaAntesDeEnviar();
         hojaActual.setValorCelda(3, 2, entidad.getId());
         hojaActual.setValorCelda(4, 2, entidad.getNombre());
-        hojaActual.setValorCelda(5, 3, TipoOferta.values()[entidad.getTipo()].toString());
+        hojaActual.setValorCelda(5, 2, TipoOferta.values()[entidad.getTipo()].toString());
     }
 
 }

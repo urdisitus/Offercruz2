@@ -12,6 +12,7 @@ import bo.com.offercruz.dal.contrato.IEmpresaDAO;
 import bo.com.offercruz.dal.contrato.IImagenDAO;
 import bo.com.offercruz.dal.contrato.IOfertaDAO;
 import bo.com.offercruz.dal.contrato.IPerfilDAO;
+import bo.com.offercruz.dal.contrato.IPermisoDAO;
 import bo.com.offercruz.dal.contrato.ISolicitudDAO;
 import bo.com.offercruz.dal.contrato.IUsuarioDAO;
 
@@ -38,6 +39,8 @@ public interface IDAOManager {
     ISolicitudDAO getSolicitudDAO();
     
     IUsuarioDAO getUsuarioDAO();
+    
+    IPermisoDAO getPermisoDAO();
     
     void iniciarTransaccion();
 

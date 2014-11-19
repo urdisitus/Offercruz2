@@ -13,6 +13,7 @@ import bo.com.offercruz.dal.contrato.IEmpresaDAO;
 import bo.com.offercruz.dal.contrato.IImagenDAO;
 import bo.com.offercruz.dal.contrato.IOfertaDAO;
 import bo.com.offercruz.dal.contrato.IPerfilDAO;
+import bo.com.offercruz.dal.contrato.IPermisoDAO;
 import bo.com.offercruz.dal.contrato.ISolicitudDAO;
 import bo.com.offercruz.dal.contrato.IUsuarioDAO;
 import bo.com.offercruz.dal.contrato.control.IDAOManager;
@@ -24,6 +25,7 @@ import bo.com.offercruz.dal.impl.EmpresaHibernateDAO;
 import bo.com.offercruz.dal.impl.ImagenHibernateDAO;
 import bo.com.offercruz.dal.impl.OfertaHibernateDAO;
 import bo.com.offercruz.dal.impl.PerfilHibernateDAO;
+import bo.com.offercruz.dal.impl.PermisoHibernateDAO;
 import bo.com.offercruz.dal.impl.SolicitudHibernateDAO;
 import bo.com.offercruz.dal.impl.UsuarioHibernateDAO;
 import java.util.logging.Level;
@@ -49,6 +51,7 @@ public class DAOManagerHibernate implements IDAOManager {
     private ISolicitudDAO solicitudDAO;
     private IClienteDAO clienteDAO;
     private IPerfilDAO perfilDAO;
+    private IPermisoDAO permisoDAO;
 
     public DAOManagerHibernate() {
 
@@ -89,6 +92,7 @@ public class DAOManagerHibernate implements IDAOManager {
         asignarSesionActual((DAOGenericoHibernate) imagenDAO);
         asignarSesionActual((DAOGenericoHibernate) usuarioDAO);
         asignarSesionActual((DAOGenericoHibernate) perfilDAO);
+        asignarSesionActual((DAOGenericoHibernate) permisoDAO);
         
     }
 
@@ -194,6 +198,15 @@ public class DAOManagerHibernate implements IDAOManager {
             asignarSesionActual((DAOGenericoHibernate) solicitudDAO);
         }
         return solicitudDAO;
+    }
+
+    @Override
+    public IPermisoDAO getPermisoDAO() {
+         if (permisoDAO == null) {
+            permisoDAO = new PermisoHibernateDAO();
+            asignarSesionActual((DAOGenericoHibernate) permisoDAO);
+        }
+        return permisoDAO;
     }
 
 }

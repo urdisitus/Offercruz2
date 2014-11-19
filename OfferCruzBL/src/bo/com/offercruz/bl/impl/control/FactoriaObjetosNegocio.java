@@ -8,10 +8,12 @@ package bo.com.offercruz.bl.impl.control;
 import bo.com.offercruz.bl.contratos.ICategoriaBO;
 import bo.com.offercruz.bl.contratos.IImagenBO;
 import bo.com.offercruz.bl.contratos.IPerfilBO;
+import bo.com.offercruz.bl.contratos.IPermisoBO;
 import bo.com.offercruz.bl.contratos.IUsuarioBO;
 import bo.com.offercruz.bl.impl.CategoriaBO;
 import bo.com.offercruz.bl.impl.ImagenBO;
 import bo.com.offercruz.bl.impl.PerfilBO;
+import bo.com.offercruz.bl.impl.PermisoBO;
 import bo.com.offercruz.bl.impl.UsuarioBO;
 
 /**
@@ -42,6 +44,15 @@ public class FactoriaObjetosNegocio {
             categoriaBO = new CategoriaBO();
         }
         return categoriaBO;
+    }
+    
+    private IPermisoBO permisoBO;
+    
+    public IPermisoBO getIPermisoBO() {
+        if (permisoBO == null) {
+            permisoBO = new PermisoBO();
+        }
+        return permisoBO;
     }
 
     private IPerfilBO perfilBO;
