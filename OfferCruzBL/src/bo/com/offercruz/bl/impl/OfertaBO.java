@@ -9,10 +9,14 @@ import bo.com.offercruz.bl.contratos.IOfertaBO;
 import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
 import bo.com.offercruz.dal.contrato.IOfertaDAO;
 import bo.com.offercruz.entidades.Categoria;
+import bo.com.offercruz.entidades.Empresa;
 import bo.com.offercruz.entidades.Oferta;
 import bo.com.offercruz.enums.TipoOferta;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 /**
  *
@@ -20,9 +24,39 @@ import java.util.Objects;
  */
 public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO> implements IOfertaBO {
 
+    private Empresa empresa;
+
     @Override
     IOfertaDAO getObjetoDAO() {
         return getDaoManager().getOfertaDAO();
+    }
+
+    @Override
+    public void setIdUsuario(Integer idUsuario) {
+        super.setIdUsuario(idUsuario);
+        empresa = ejecutarEnTransaccion(new Callable<Empresa>() {
+
+            @Override
+            public Empresa call() throws Exception {
+                return getDaoManager().getEmpresaDAO().obtenerEmpresa(idUsuario);
+            }
+        });
+    }
+    
+        @Override
+    public List<Oferta> obtenerTodos() {
+        List<Oferta> ofertas = new ArrayList<Oferta>();
+        if (empresa == null) {
+            ofertas.addAll(super.obtenerTodos());
+        } else {
+            ofertas.addAll(getObjetoDAO().obtenerTodas(empresa.getId()));
+        }
+        return ofertas;
+    }
+
+    @Override
+    public Empresa getEmpresa() {
+        return empresa;
     }
 
     @Override
@@ -95,11 +129,11 @@ public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO>
                 }
             }
         }
-        
+
         //Precio Unitario
-        if(entity.getPrecioUnitario() <= 0){
-             appendException(new BusinessExceptionMessage("El precio unitario debe ser mayor a Cero (0)", "precio unitario"));
-        }     
+        if (entity.getPrecioUnitario() <= 0) {
+            appendException(new BusinessExceptionMessage("El precio unitario debe ser mayor a Cero (0)", "precio unitario"));
+        }
     }
 
     @Override

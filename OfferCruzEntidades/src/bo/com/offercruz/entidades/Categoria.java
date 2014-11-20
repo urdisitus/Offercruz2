@@ -1,5 +1,5 @@
 package bo.com.offercruz.entidades;
-// Generated 18-nov-2014 1:51:54 by Hibernate Tools 3.6.0
+// Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -18,7 +18,7 @@ public class Categoria  implements java.io.Serializable {
      private int estado;
      private Date fechaCreacion;
      private Date fechaModificacion;
-     private Set categoriaempresas = new HashSet(0);
+     private Set empresas = new HashSet(0);
      private Set ofertas = new HashSet(0);
      private Set ofertas_1 = new HashSet(0);
 
@@ -33,13 +33,13 @@ public class Categoria  implements java.io.Serializable {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
     }
-    public Categoria(String nombre, int tipo, int estado, Date fechaCreacion, Date fechaModificacion, Set categoriaempresas, Set ofertas, Set ofertas_1) {
+    public Categoria(String nombre, int tipo, int estado, Date fechaCreacion, Date fechaModificacion, Set empresas, Set ofertas, Set ofertas_1) {
        this.nombre = nombre;
        this.tipo = tipo;
        this.estado = estado;
        this.fechaCreacion = fechaCreacion;
        this.fechaModificacion = fechaModificacion;
-       this.categoriaempresas = categoriaempresas;
+       this.empresas = empresas;
        this.ofertas = ofertas;
        this.ofertas_1 = ofertas_1;
     }
@@ -86,12 +86,12 @@ public class Categoria  implements java.io.Serializable {
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
-    public Set getCategoriaempresas() {
-        return this.categoriaempresas;
+    public Set getEmpresas() {
+        return this.empresas;
     }
     
-    public void setCategoriaempresas(Set categoriaempresas) {
-        this.categoriaempresas = categoriaempresas;
+    public void setEmpresas(Set empresas) {
+        this.empresas = empresas;
     }
     public Set getOfertas() {
         return this.ofertas;

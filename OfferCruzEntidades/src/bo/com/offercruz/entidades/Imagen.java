@@ -1,5 +1,5 @@
 package bo.com.offercruz.entidades;
-// Generated 18-nov-2014 1:51:54 by Hibernate Tools 3.6.0
+// Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -20,11 +20,11 @@ public class Imagen  implements java.io.Serializable {
      private Date fechaModificacion;
      private int estado;
      private String imagenFisica;
-     private Set imagencontenidos = new HashSet(0);
      private Set ofertas = new HashSet(0);
      private Set empresas = new HashSet(0);
      private Set empresas_1 = new HashSet(0);
      private Set clientes = new HashSet(0);
+     private Set contenidos = new HashSet(0);
      private Set clientes_1 = new HashSet(0);
      private Set ofertas_1 = new HashSet(0);
 
@@ -39,7 +39,7 @@ public class Imagen  implements java.io.Serializable {
         this.estado = estado;
         this.imagenFisica = imagenFisica;
     }
-    public Imagen(String nombre, Integer ancho, Integer alto, Date fechaCreacion, Date fechaModificacion, int estado, String imagenFisica, Set imagencontenidos, Set ofertas, Set empresas, Set empresas_1, Set clientes, Set clientes_1, Set ofertas_1) {
+    public Imagen(String nombre, Integer ancho, Integer alto, Date fechaCreacion, Date fechaModificacion, int estado, String imagenFisica, Set ofertas, Set empresas, Set empresas_1, Set clientes, Set contenidos, Set clientes_1, Set ofertas_1) {
        this.nombre = nombre;
        this.ancho = ancho;
        this.alto = alto;
@@ -47,11 +47,11 @@ public class Imagen  implements java.io.Serializable {
        this.fechaModificacion = fechaModificacion;
        this.estado = estado;
        this.imagenFisica = imagenFisica;
-       this.imagencontenidos = imagencontenidos;
        this.ofertas = ofertas;
        this.empresas = empresas;
        this.empresas_1 = empresas_1;
        this.clientes = clientes;
+       this.contenidos = contenidos;
        this.clientes_1 = clientes_1;
        this.ofertas_1 = ofertas_1;
     }
@@ -112,13 +112,6 @@ public class Imagen  implements java.io.Serializable {
     public void setImagenFisica(String imagenFisica) {
         this.imagenFisica = imagenFisica;
     }
-    public Set getImagencontenidos() {
-        return this.imagencontenidos;
-    }
-    
-    public void setImagencontenidos(Set imagencontenidos) {
-        this.imagencontenidos = imagencontenidos;
-    }
     public Set getOfertas() {
         return this.ofertas;
     }
@@ -146,6 +139,13 @@ public class Imagen  implements java.io.Serializable {
     
     public void setClientes(Set clientes) {
         this.clientes = clientes;
+    }
+    public Set getContenidos() {
+        return this.contenidos;
+    }
+    
+    public void setContenidos(Set contenidos) {
+        this.contenidos = contenidos;
     }
     public Set getClientes_1() {
         return this.clientes_1;

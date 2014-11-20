@@ -6,12 +6,15 @@
 package bo.com.offercruzmail.imp;
 
 import bo.com.offercruz.bl.contratos.IOfertaBO;
+import bo.com.offercruz.bl.excepticiones.BusinessException;
+import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.entidades.Empresa;
 import bo.com.offercruz.entidades.Oferta;
 import bo.com.offercruz.enums.TipoOferta;
 import java.util.List;
+import java.util.concurrent.Callable;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -21,12 +24,10 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class InterpretadorMensajeOferta extends InterpretadorMensajeGenerico<Oferta, Integer, IOfertaBO> {
 
-    private Empresa empresa;
-
     @Override
     public void setIdUsuario(Integer idUsuario) {
         super.setIdUsuario(idUsuario); //To change body of generated methods, choose Tools | Templates.
-        //ObtenerEmpresa desde usuario
+        //ObtenerEmpresa desde usuario        
     }
 
     @Override
@@ -79,7 +80,6 @@ public class InterpretadorMensajeOferta extends InterpretadorMensajeGenerico<Ofe
             c.setNombre(categoria);
             entidad.setCategoria(c);
         }
-        entidad.setEmpresa(empresa);
         return entidad;
     }
 
@@ -108,14 +108,18 @@ public class InterpretadorMensajeOferta extends InterpretadorMensajeGenerico<Ofe
         hojaActual.agregarValidacionLista(6, 6, 2, 2, descripciones, true, true);
 
         //Categoria        
-        String[] categoria = new String[empresa.getCategorias().size()];
-        int i = 0;
-        for (Object object : empresa.getCategorias()) {
-            Categoria c = (Categoria)object;
-            categoria[i] = c.getNombre();
-            i++;
+        if (getObjetoNegocio().getEmpresa() == null) {
+            appendException(new BusinessExceptionMessage("Debe ser un usuario empresa para poder realizar esta operacion", "autentificacion"));
+        } else {
+            String[] categoria = new String[getObjetoNegocio().getEmpresa().getCategorias().size()];
+            int i = 0;
+            for (Object object : getObjetoNegocio().getEmpresa().getCategorias()) {
+                Categoria c = (Categoria) object;
+                categoria[i] = c.getNombre();
+                i++;
+            }
+            hojaActual.agregarValidacionLista(8, 8, 2, 2, categoria, true, true);
         }
-        hojaActual.agregarValidacionLista(8, 8, 2, 2, categoria, true, true);
     }
 
     @Override
@@ -140,12 +144,16 @@ public class InterpretadorMensajeOferta extends InterpretadorMensajeGenerico<Ofe
     @Override
     void mostrarEntidad(Oferta entidad, Workbook libro) {
         preparPlantillaAntesDeEnviar(libro);
-        hojaActual.setValorCelda(3, 2, entidad.getId());
-        hojaActual.setValorCelda(4, 2, entidad.getNombre());
-        hojaActual.setValorCelda(5, 2, entidad.getDescripcion());
-        hojaActual.setValorCelda(6, 2, TipoOferta.values()[entidad.getTipoOferta()].toString());
-        hojaActual.setValorCelda(7, 2, entidad.getPrecioUnitario());
-        hojaActual.setValorCelda(8, 2, entidad.getCategoria().getNombre());
+        if (getObjetoNegocio().getEmpresa() == null) {
+            appendException(new BusinessExceptionMessage("Debe ser un usuario de tipo empresa para poder gestionar ofertas", "autentificacion"));
+        } else {
+            hojaActual.setValorCelda(3, 2, entidad.getId());
+            hojaActual.setValorCelda(4, 2, entidad.getNombre());
+            hojaActual.setValorCelda(5, 2, entidad.getDescripcion());
+            hojaActual.setValorCelda(6, 2, TipoOferta.values()[entidad.getTipoOferta()].toString());
+            hojaActual.setValorCelda(7, 2, entidad.getPrecioUnitario());
+            hojaActual.setValorCelda(8, 2, entidad.getCategoria().getNombre());
+        }
     }
 
 }

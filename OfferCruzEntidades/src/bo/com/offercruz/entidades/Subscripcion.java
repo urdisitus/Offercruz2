@@ -1,5 +1,5 @@
 package bo.com.offercruz.entidades;
-// Generated 18-nov-2014 1:51:54 by Hibernate Tools 3.6.0
+// Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0
 
 
 import java.util.Date;

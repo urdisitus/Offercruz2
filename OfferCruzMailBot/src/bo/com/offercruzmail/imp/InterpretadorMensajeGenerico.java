@@ -69,6 +69,7 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
             mapa.put("perfil", new InterpretadorMensajePerfil());
             mapa.put("categoria", new InterpretadorMensajeCategoria());
             mapa.put("usuario", new InterpretadorMensajeUsuario());
+            mapa.put("empresa", new InterpretadorMensajeEmpresa());
 //
 //            mapa.put("reportes", new InterpretadorMensajeReportes());
 
@@ -147,6 +148,7 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
         String nombreArchivoOrigen;
         String nombreAdjunto;
         List<T> lista = null;
+        mensajesError = null;
         T entidad = null;
         if (!plantillaNueva) {
             if ("todos".equals(idCargar)) {
@@ -196,6 +198,9 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
                 } else {
                     mostrarEntidad(entidad, libro);
                 }
+            }
+            if (mensajesError != null) {
+                return FormadorMensajes.enviarErroresNegocio(mensajesError);
             }
             //Guardamos cambio
             os = new FileOutputStream(archivoCopia);

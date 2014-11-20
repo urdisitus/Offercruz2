@@ -12,6 +12,5 @@ import bo.com.offercruz.entidades.Empresa;
  *
  * @author Ernesto
  */
-public interface IEmpresaBO extends IGenericoBO<Empresa, Integer>{
-    
+public interface IEmpresaBO extends IGenericoBO<Empresa, Integer>{  
 }

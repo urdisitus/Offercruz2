@@ -1,5 +1,5 @@
 package bo.com.offercruz.entidades;
-// Generated 18-nov-2014 1:51:54 by Hibernate Tools 3.6.0
+// Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0
 
 
 import java.util.Date;
@@ -22,8 +22,8 @@ public class Contenido  implements java.io.Serializable {
      private Date fechaCreacion;
      private Date fechaModificacion;
      private Set detallecontenidos = new HashSet(0);
-     private Set imagencontenidos = new HashSet(0);
      private Set detallecontenidos_1 = new HashSet(0);
+     private Set imagens = new HashSet(0);
      private Set solicituds = new HashSet(0);
 
     public Contenido() {
@@ -40,7 +40,7 @@ public class Contenido  implements java.io.Serializable {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
     }
-    public Contenido(int tipoContenido, String titulo, String descripcion, int estado, Date fechaPublicacion, Date fechaExpiracion, Date fechaCreacion, Date fechaModificacion, Set detallecontenidos, Set imagencontenidos, Set detallecontenidos_1, Set solicituds) {
+    public Contenido(int tipoContenido, String titulo, String descripcion, int estado, Date fechaPublicacion, Date fechaExpiracion, Date fechaCreacion, Date fechaModificacion, Set detallecontenidos, Set detallecontenidos_1, Set imagens, Set solicituds) {
        this.tipoContenido = tipoContenido;
        this.titulo = titulo;
        this.descripcion = descripcion;
@@ -50,8 +50,8 @@ public class Contenido  implements java.io.Serializable {
        this.fechaCreacion = fechaCreacion;
        this.fechaModificacion = fechaModificacion;
        this.detallecontenidos = detallecontenidos;
-       this.imagencontenidos = imagencontenidos;
        this.detallecontenidos_1 = detallecontenidos_1;
+       this.imagens = imagens;
        this.solicituds = solicituds;
     }
    
@@ -125,19 +125,19 @@ public class Contenido  implements java.io.Serializable {
     public void setDetallecontenidos(Set detallecontenidos) {
         this.detallecontenidos = detallecontenidos;
     }
-    public Set getImagencontenidos() {
-        return this.imagencontenidos;
-    }
-    
-    public void setImagencontenidos(Set imagencontenidos) {
-        this.imagencontenidos = imagencontenidos;
-    }
     public Set getDetallecontenidos_1() {
         return this.detallecontenidos_1;
     }
     
     public void setDetallecontenidos_1(Set detallecontenidos_1) {
         this.detallecontenidos_1 = detallecontenidos_1;
+    }
+    public Set getImagens() {
+        return this.imagens;
+    }
+    
+    public void setImagens(Set imagens) {
+        this.imagens = imagens;
     }
     public Set getSolicituds() {
         return this.solicituds;

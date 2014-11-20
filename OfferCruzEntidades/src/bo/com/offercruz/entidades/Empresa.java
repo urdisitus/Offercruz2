@@ -1,5 +1,5 @@
 package bo.com.offercruz.entidades;
-// Generated 20-nov-2014 3:14:04 by Hibernate Tools 3.6.0
+// Generated 20-nov-2014 4:32:22 by Hibernate Tools 3.6.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -27,22 +27,13 @@ public class Empresa implements java.io.Serializable {
     private String nit;
     private int tipoOferta;
     private String fax;
+    private String correoElectronico;
     private Set ofertas = new HashSet(0);
     private Set categorias = new HashSet(0);
     private Set subscripcions = new HashSet(0);
     private Set solicituds = new HashSet(0);
 
-    private String correoElectronico;
-
     public Empresa() {
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
     }
 
     public Empresa(Usuario usuario, int estado, Date fechaCreacion, Date fechaModificacion, String razonSocial, int tipoOferta) {
@@ -79,6 +70,14 @@ public class Empresa implements java.io.Serializable {
 
     public Integer getId() {
         return this.id;
+    }
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 
     public void setId(Integer id) {
