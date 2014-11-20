@@ -12,12 +12,14 @@ import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
 import bo.com.offercruz.dal.contrato.IPerfilDAO;
 import bo.com.offercruz.dal.contrato.IPermisoDAO;
 import bo.com.offercruz.dal.imp.control.FactoriaDAOManager;
+import bo.com.offercruz.dal.impl.PermisoHibernateDAO;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Permiso;
 import bo.com.offercruz.entidades.Usuario;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -33,7 +35,7 @@ public class PerfilBO extends ObjetoNegocioGenerico<Perfil, Integer, IPerfilDAO>
     }
 
     @Override
-    public boolean verificarPermiso(Integer idPermiso, Usuario usuario) {
+    public boolean verificarPermiso(String comandoPermiso, Usuario usuario) {
         if (usuario == null) {
             return false;
         }
@@ -45,8 +47,18 @@ public class PerfilBO extends ObjetoNegocioGenerico<Perfil, Integer, IPerfilDAO>
         if (usuario.getPerfil().getId() == null) {
             return false;
         }
-
-        return true;
+        return ejecutarEnTransaccion(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
+                for (Permiso permiso : permisos) {
+                    if(permiso.getComando().equals(comandoPermiso)){
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override

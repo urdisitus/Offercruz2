@@ -30,4 +30,8 @@ public interface IGenericoBO<T, ID extends Serializable> {
     List<T> obtenerNuevosObjetos(Date fecha);
 
     Integer getIdUsuario();
+
+    String getComandoPermiso();
+
+    void setComandoPermiso(String comando);
 }

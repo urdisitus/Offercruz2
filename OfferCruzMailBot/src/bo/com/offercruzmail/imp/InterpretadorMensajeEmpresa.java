@@ -6,6 +6,8 @@
 package bo.com.offercruzmail.imp;
 
 import bo.com.offercruz.bl.contratos.IEmpresaBO;
+import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
+import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.entidades.Empresa;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,32 +88,75 @@ public class InterpretadorMensajeEmpresa extends InterpretadorMensajeGenerico<Em
 
     @Override
     IEmpresaBO getObjetoNegocio() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return FactoriaObjetosNegocio.getInstance().getIEmpresaBO();
     }
 
     @Override
     boolean esNuevo(Empresa entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return entidad.getId() == null;
     }
 
     @Override
     String getId(Empresa entidad) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return entidad.getId().toString();
     }
 
     @Override
     Integer convertirId(String cadena) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return convertirIdAEntero(cadena);
     }
 
     @Override
     void mostrarLista(List<Empresa> lista) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int i = 5;
+        for (Empresa empresa : lista) {
+            hojaActual.setValorCelda(i, 1, empresa.getId());
+            hojaActual.setValorCelda(i, 2, empresa.getRazonSocial());
+            hojaActual.setValorCelda(i, 3, empresa.getSlogan());
+            hojaActual.setValorCelda(i, 4, empresa.getMision());
+            hojaActual.setValorCelda(i, 5, empresa.getVision());
+            hojaActual.setValorCelda(i, 6, empresa.getTelefono());
+            hojaActual.setValorCelda(i, 7, empresa.getDireccion());
+            hojaActual.setValorCelda(i, 8, empresa.getTipoSociedad());
+            hojaActual.setValorCelda(i, 9, empresa.getCorreoElectronico());
+            hojaActual.setValorCelda(i, 10, empresa.getFax());
+            hojaActual.setValorCelda(i, 11, empresa.getNit());
+            hojaActual.setValorCelda(i, 12, empresa.getFechaApertura().toString());
+            
+            
+            StringBuilder categorias = new StringBuilder();
+            for (Object object : empresa.getCategorias()) {
+                Categoria categoria = (Categoria) object;
+                categorias.append(categoria.getNombre()).append(", ");
+            }
+            hojaActual.setValorCelda(i, 13, categorias.toString());
+            i++;
+        }
     }
 
     @Override
     void mostrarEntidad(Empresa entidad, Workbook libro) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        preparPlantillaAntesDeEnviar(libro);
+        int i = 5; 
+        hojaActual.setValorCelda(i, 1, entidad.getId());
+            hojaActual.setValorCelda(i, 2, entidad.getRazonSocial());
+            hojaActual.setValorCelda(i, 3, entidad.getSlogan());
+            hojaActual.setValorCelda(i, 4, entidad.getMision());
+            hojaActual.setValorCelda(i, 5, entidad.getVision());
+            hojaActual.setValorCelda(i, 6, entidad.getTelefono());
+            hojaActual.setValorCelda(i, 7, entidad.getDireccion());
+            hojaActual.setValorCelda(i, 8, entidad.getTipoSociedad());
+            hojaActual.setValorCelda(i, 9, entidad.getCorreoElectronico());
+            hojaActual.setValorCelda(i, 10,entidad.getFax());
+            hojaActual.setValorCelda(i, 11,entidad.getNit());
+            hojaActual.setValorCelda(i, 12,entidad.getFechaApertura().toString());
+            
+            
+//            StringBuilder categorias = new StringBuilder();
+//            for (Object object : empresa.getCategoriaempresas()) {
+//                Categoria categoria = (Categoria) object;
+//                categorias.append(categoria.getNombre()).append(", ");
+//            }   
     }
 
 }

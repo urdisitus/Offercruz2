@@ -14,5 +14,5 @@ import bo.com.offercruz.entidades.Usuario;
  */
 public interface IPerfilBO extends IGenericoBO<Perfil, Integer> {
 
-    boolean verificarPermiso(Integer idPermiso, Usuario usuario);
+    boolean verificarPermiso(String comandoPermiso, Usuario usuario);
 }

@@ -13,5 +13,5 @@ import bo.com.offercruz.entidades.Oferta;
  * @author Ernesto
  */
 public interface IOfertaDAO extends  IDAOGenerico<Oferta, Integer>{
-    
+    Integer getIdPorNombre(String nombre);
 }

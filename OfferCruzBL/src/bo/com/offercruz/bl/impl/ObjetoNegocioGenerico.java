@@ -12,6 +12,7 @@ import bo.com.offercruz.bl.excepticiones.PermisosInsuficientesException;
 import bo.com.offercruz.dal.contrato.IDAOGenerico;
 import bo.com.offercruz.dal.contrato.control.IDAOManager;
 import bo.com.offercruz.dal.imp.control.FactoriaDAOManager;
+import bo.com.offercruz.entidades.Permiso;
 import bo.com.offercruz.entidades.Usuario;
 import java.io.Serializable;
 import java.util.Date;
@@ -34,9 +35,20 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
     protected Integer idUsuario;
     protected Usuario usuarioActual;
     private BusinessException mensajesError;
+    private String comandoPermiso;
 
     public ObjetoNegocioGenerico() {
 
+    }
+
+    @Override
+    public String getComandoPermiso() {
+        return comandoPermiso;
+    }
+
+    @Override
+    public void setComandoPermiso(String comandoPermiso) {
+        this.comandoPermiso = comandoPermiso;
     }
 
     public IDAOManager getDaoManager() {
@@ -93,6 +105,9 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         return ejecutarEnTransaccion(new Callable<T>() {
             @Override
             public T call() throws Exception {
+                if (!tienePermiso()) {
+                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+                }
                 T entidad = getObjetoDAO().recuperarPorId(id);
                 if (entidad != null) {
                     despuesDeRecuperar(entidad);
@@ -107,7 +122,10 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         return ejecutarEnTransaccion(new Callable<List<T>>() {
             @Override
             public List<T> call() {
-                return  getObjetoDAO().obtenerTodos();
+                if (!tienePermiso()) {
+                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+                }
+                return getObjetoDAO().obtenerTodos();
             }
         });
     }
@@ -117,6 +135,9 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         return ejecutarEnTransaccion(new Callable<List<T>>() {
             @Override
             public List<T> call() {
+                if (!tienePermiso()) {
+                    throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+                }
                 return getObjetoDAO().obtenerNuevosObjetos(fecha);
             }
         });
@@ -124,18 +145,18 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
 
     @Override
     public T insertar(T entity) {
-//        if (idUsuario == null) {
-//            throw new BusinessException("Debe definir el usuario que solicitando la acción para continuar");
-//        }
+        if (idUsuario == null) {
+            throw new BusinessException("Debe definir el usuario que solicitando la acción para continuar");
+        }
         final T x = entity;
         return ejecutarEnTransaccion(() -> {
-//            usuarioActual = getDaoManager().getUsuarioDAO().recuperarPorId(idUsuario);
-//            if (usuarioActual == null) {
-//                throw new BusinessException("El usuario especificado no existe");
-//            }
-//            if (!tienePermisoInsertar()) {
-//                throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
-//            }
+            usuarioActual = getDaoManager().getUsuarioDAO().recuperarPorId(idUsuario);
+            if (usuarioActual == null) {
+                throw new BusinessException("El usuario especificado no existe");
+            }
+            if (!tienePermiso()) {
+                throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
+            }
             mensajesError = null;
             validar(x);
             if (mensajesError != null) {
@@ -165,7 +186,7 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
                 if (usuarioActual == null) {
                     throw new BusinessException("El usuario especificado no existe");
                 }
-                if (!tienePermisoModificar()) {
+                if (!tienePermiso()) {
                     throw new PermisosInsuficientesException("No tiene los privilegios necesarios para ejecutar esta acción, contacte al administrador");
                 }
                 mensajesError = null;
@@ -181,21 +202,34 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
         });
     }
 
+    public boolean verificarPermiso(String comandoPermiso, Usuario usuario) {
+        if (usuario == null) {
+            return false;
+        }
+
+        if (usuario.getPerfil() == null) {
+            return false;
+        }
+
+        if (usuario.getPerfil().getId() == null) {
+            return false;
+        }
+        List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
+        for (Permiso permiso : permisos) {
+            if (permiso.getComando().equals(comandoPermiso)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * *
      *
      * @return Verdadero si el usuario actual puede insertar.
      */
-    private boolean tienePermisoInsertar() {
-//        if (IdPermisoInsertar() == 0) {
-//            return true;
-//        }
-//        RolPermiso rp = getDaoManager().getRolPermisoDAO().recuperarPorId(new RolPermisoId(IdPermisoInsertar(), usuarioActual.getRol().getId()));
-//        if (rp == null) {
-//            return false;
-//        }
-//        return rp.isValor();
-        return true;
+    private boolean tienePermiso() {
+        return verificarPermiso(comandoPermiso, usuarioActual);
     }
 
     /**
@@ -203,17 +237,6 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
      *
      * @return Verdadero si el usuario actual puede modificar.
      */
-    private boolean tienePermisoModificar() {
-//        if (IdPermisoActualizar() == 0) {
-//            return true;
-//        }
-//        RolPermiso rp = getDaoManager().getRolPermisoDAO().recuperarPorId(new RolPermisoId(IdPermisoActualizar(), usuarioActual.getRol().getId()));
-//        if (rp == null) {
-//            return false;
-//        }
-//        return rp.isValor();
-        return true;
-    }
 
     protected int IdPermisoInsertar() {
         return 0;
@@ -241,7 +264,7 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
 
     }
 
-    protected void preActualizar(T entidad) {        
+    protected void preActualizar(T entidad) {
     }
 
     protected void postActualizar(T entidad) {

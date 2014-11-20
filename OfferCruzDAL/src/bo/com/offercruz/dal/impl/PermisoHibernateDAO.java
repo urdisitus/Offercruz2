@@ -9,6 +9,7 @@ package bo.com.offercruz.dal.impl;
 import bo.com.offercruz.dal.base.DAOGenericoHibernate;
 import bo.com.offercruz.dal.contrato.IPermisoDAO;
 import bo.com.offercruz.entidades.Permiso;
+import java.util.List;
 import org.hibernate.Query;
 
 /**
@@ -23,6 +24,13 @@ public class PermisoHibernateDAO extends DAOGenericoHibernate<Permiso, Integer> 
         query.setParameter("nombre", nombre);
         Integer intte = (Integer) query.uniqueResult();
         return intte;
+    }
+
+    @Override
+    public List<Permiso> obtenerPermisos(Integer idPermiso) {
+        Query query = getSession().createQuery("select p from Permiso p join p.perfils t WHERE t.id = :idPerfil ");
+        query.setParameter("idPerfil", idPermiso);
+        return query.list();
     }
     
 }

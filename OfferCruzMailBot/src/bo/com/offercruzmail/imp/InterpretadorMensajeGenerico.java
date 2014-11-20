@@ -65,6 +65,7 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
 //            mapa.put("extraccion", new InterpretadorMensajeExtraccion());
 //            mapa.put("despacho", new InterpretadorMensajeMovimiento());
 //            mapa.put("dasometrico", new InterpretarPlantillaFormulario());
+            mapa.put("oferta", new InterpretadorMensajeOferta());
             mapa.put("perfil", new InterpretadorMensajePerfil());
             mapa.put("categoria", new InterpretadorMensajeCategoria());
             mapa.put("usuario", new InterpretadorMensajeUsuario());
@@ -251,6 +252,7 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
             return FormadorMensajes.enviarErroresNegocio(mensajesError);
         }
         getObjetoNegocio().setIdUsuario(idUsuario);
+        getObjetoNegocio().setComandoPermiso(nombreEntidad);
         boolean esInserccion;
         try {
             if (esNuevo(entidad)) {
