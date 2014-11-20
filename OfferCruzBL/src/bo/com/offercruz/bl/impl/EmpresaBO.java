@@ -45,7 +45,6 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         }
         
         // VALIDAR FECHA
-        validar fecha
                 
     }
 

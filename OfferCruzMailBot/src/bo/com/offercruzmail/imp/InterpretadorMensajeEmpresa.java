@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bo.com.offercruzmail.imp;
 
 import bo.com.offercruz.bl.contratos.IEmpresaBO;
@@ -14,12 +13,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
  * @author juanCarlos
  */
-public class InterpretadorMensajeEmpresa extends InterpretadorMensajeGenerico<Empresa, Integer, IEmpresaBO>{
+public class InterpretadorMensajeEmpresa extends InterpretadorMensajeGenerico<Empresa, Integer, IEmpresaBO> {
 
     @Override
     Empresa convertirHojaEnEntidad() {
@@ -38,44 +38,44 @@ public class InterpretadorMensajeEmpresa extends InterpretadorMensajeGenerico<Em
         //Slogan
         celda = hojaActual.getCelda(5, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setSlogan(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setSlogan(hojaActual.getValorCeldaCadena(celda));
         }
-        
-         celda = hojaActual.getCelda(6, 2);
+
+        celda = hojaActual.getCelda(6, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setMision(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setMision(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(7, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setVision(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setVision(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(8, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setTelefono(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setTelefono(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(9, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setDireccion(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setDireccion(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(10, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setTipoSociedad(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setTipoSociedad(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(11, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setCorreoElectronico(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setCorreoElectronico(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(12, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setFax(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setFax(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(13, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            entidad.setNit(hojaActual.getValorCeldaCadena(celda)); 
+            entidad.setNit(hojaActual.getValorCeldaCadena(celda));
         }
         celda = hojaActual.getCelda(14, 2);
         if (celda.getCellType() != Cell.CELL_TYPE_BLANK) {
-            try { 
+            try {
                 entidad.setFechaApertura(new SimpleDateFormat("dd/MM/yyyy").parse(hojaActual.getValorCeldaCadena(celda)));
             } catch (ParseException ex) {
                 Logger.getLogger(InterpretadorMensajeEmpresa.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,8 +110,8 @@ public class InterpretadorMensajeEmpresa extends InterpretadorMensajeGenerico<Em
     }
 
     @Override
-    void mostrarEntidad(Empresa entidad) {
+    void mostrarEntidad(Empresa entidad, Workbook libro) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
