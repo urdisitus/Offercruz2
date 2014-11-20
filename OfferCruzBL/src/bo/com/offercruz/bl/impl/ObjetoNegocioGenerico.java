@@ -229,6 +229,9 @@ public abstract class ObjetoNegocioGenerico<T, ID extends Serializable, U extend
      * @return Verdadero si el usuario actual puede insertar.
      */
     private boolean tienePermiso() {
+        if(usuarioActual== null && idUsuario!= null){               
+            usuarioActual = getDaoManager().getUsuarioDAO().recuperarPorId(idUsuario);
+        }
         return verificarPermiso(comandoPermiso, usuarioActual);
     }
 

@@ -34,32 +34,33 @@ public class PerfilBO extends ObjetoNegocioGenerico<Perfil, Integer, IPerfilDAO>
         return getDaoManager().getPerfilDAO();
     }
 
-    @Override
-    public boolean verificarPermiso(String comandoPermiso, Usuario usuario) {
-        if (usuario == null) {
-            return false;
-        }
-
-        if (usuario.getPerfil() == null) {
-            return false;
-        }
-
-        if (usuario.getPerfil().getId() == null) {
-            return false;
-        }
-        return ejecutarEnTransaccion(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
-                for (Permiso permiso : permisos) {
-                    if(permiso.getComando().equals(comandoPermiso)){
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    }
+//    @Override
+//    public boolean verificarPermiso(String comandoPermiso, Usuario usuario) {
+//        
+//        if (usuario == null) {
+//            return false;
+//        }
+//
+//        if (usuario.getPerfil() == null) {
+//            return false;
+//        }
+//
+//        if (usuario.getPerfil().getId() == null) {
+//            return false;
+//        }
+//        return ejecutarEnTransaccion(new Callable<Boolean>() {
+//            @Override
+//            public Boolean call() throws Exception {
+//                List<Permiso> permisos = getDaoManager().getPermisoDAO().obtenerPermisos(usuario.getPerfil().getId());
+//                for (Permiso permiso : permisos) {
+//                    if(permiso.getComando().equals(comandoPermiso)){
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+//    }
 
     @Override
     protected void validar(Perfil entity) {

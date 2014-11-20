@@ -20,7 +20,7 @@ public class EmpresaHibernateDAO extends DAOGenericoHibernate<Empresa, Integer> 
 
     @Override
     public Empresa obtenerEmpresa(Integer idUsuario) {
-        Query query = getSession().createQuery("SELECT 1 from Empresa c where c.idUsuario = :idUsuario ");
+        Query query = getSession().createQuery("Select c from Empresa c join c.usuario u where u.id = :idUsuario ");
         query.setParameter("idUsuario", idUsuario);
         return (Empresa) query.uniqueResult();
     }
@@ -58,6 +58,19 @@ public class EmpresaHibernateDAO extends DAOGenericoHibernate<Empresa, Integer> 
         return empresa;
     }
 
+    @Override
+    public Integer obtenerIdPorNombre(String nombre) {
+
+        /*Query query = getSession().createQuery("SELECT 1 from " + Categoria.class.getName() + " c where c.nombre = :Nombre AND c.estado > 0 AND c.id != :Id");
+         query.setParameter("Nombre", nombre);
+         query.setParameter("Id", id);
+         return (Categoria)query.uniqueResult();*/
+        Query query = getSession().createQuery("SELECT id from Empresa c where c.razonSocial = :Nombre AND c.estado > 0 ");
+        query.setParameter("Nombre", nombre);
+
+        return (Integer) query.uniqueResult();
+    }
+    
     @Override
     public Empresa obtenerPorNombre(String nombre) {
 

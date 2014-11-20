@@ -20,14 +20,21 @@ public class CategoriaHibernateDAO extends DAOGenericoHibernate<Categoria, Integ
 
     @Override
     public List<Categoria> obtenerTodasbyTipo(TipoOferta tipoOferta) {
-        Query query = getSession().createQuery("from " + Categoria.class.getName() + " c where c.tipo > :Tipo AND c.estado > 0 ");
+        Query query = getSession().createQuery("from Categoria c where c.tipo > :Tipo AND c.estado > 0 ");
         query.setParameter("Tipo", tipoOferta.ordinal());
         return query.list();
+    }
+    
+    @Override
+    public Integer obtenerIdPorNombre(String nombre){
+         Query query = getSession().createQuery("SELECT id from Categoria c where c.nombre = :Nombre AND c.estado > 0 ");
+        query.setParameter("Nombre", nombre);
+        return (Integer)query.uniqueResult();
     }
 
     @Override
     public Categoria obtenerPorNombre(String nombre, Integer id) {
-        Query query = getSession().createQuery("SELECT 1 from " + Categoria.class.getName() + " c where c.nombre = :Nombre AND c.estado > 0 AND c.id != :Id");
+        Query query = getSession().createQuery("SELECT 1 from Categoria c where c.nombre = :Nombre AND c.estado > 0 AND c.id != :Id");
         query.setParameter("Nombre", nombre);
         query.setParameter("Id", id);
         return (Categoria)query.uniqueResult();
@@ -35,7 +42,7 @@ public class CategoriaHibernateDAO extends DAOGenericoHibernate<Categoria, Integ
     
      @Override
     public Categoria obtenerPorNombre(String nombre) {
-        Query query = getSession().createQuery("SELECT 1 from " + Categoria.class.getName() + " c where c.nombre = :Nombre AND c.estado > 0 ");
+        Query query = getSession().createQuery("SELECT 1 from Categoria c where c.nombre = :Nombre AND c.estado > 0 ");
         query.setParameter("Nombre", nombre);
         return (Categoria)query.uniqueResult();
     }

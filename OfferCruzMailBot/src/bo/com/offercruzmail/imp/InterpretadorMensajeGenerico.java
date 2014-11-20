@@ -8,6 +8,7 @@ package bo.com.offercruzmail.imp;
 import bo.com.offercruz.bl.contratos.IGenericoBO;
 import bo.com.offercruz.bl.excepticiones.BusinessException;
 import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
+import bo.com.offercruz.bl.excepticiones.PermisosInsuficientesException;
 import bo.com.offercruzmail.LectorBandejaCorreo;
 import bo.com.offercruzmail.contrato.IInterpretadorMensaje;
 import bo.com.offercruzmail.utils.HojaExcelHelper;
@@ -150,87 +151,96 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
         List<T> lista = null;
         mensajesError = null;
         T entidad = null;
-        if (!plantillaNueva) {
-            if ("todos".equals(idCargar)) {
-                lista = getObjetoNegocio().obtenerTodos();
-                nombreArchivoOrigen = nombreEntidad + "-" + "lista";
-                nombreAdjunto = "lista_" + nombreEntidad + ".xlsx";
+        getObjetoNegocio().setIdUsuario(idUsuario);
+        getObjetoNegocio().setComandoPermiso(nombreEntidad);
+        try {
+            if (!plantillaNueva) {
+                if ("todos".equals(idCargar)) {
+                    lista = getObjetoNegocio().obtenerTodos();
+                    nombreArchivoOrigen = nombreEntidad + "-" + "lista";
+                    nombreAdjunto = "lista_" + nombreEntidad + ".xlsx";
+                } else {
+                    ID id;
+                    try {
+                        id = convertirId(idCargar);
+                    } catch (Exception ex) {
+                        return FormadorMensajes.enviarIdCargarNoValido();
+                    }
+                    entidad = getObjetoNegocio().recuperarPorId(id);
+                    if (entidad == null) {
+                        return FormadorMensajes.enviarEntidadNoExiste(idCargar);
+                    }
+                    nombreArchivoOrigen = nombreEntidad;
+                    nombreAdjunto = nombreEntidad + "_" + idCargar + ".xlsx";
+                }
             } else {
-                ID id;
-                try {
-                    id = convertirId(idCargar);
-                } catch (Exception ex) {
-                    return FormadorMensajes.enviarIdCargarNoValido();
-                }
-                entidad = getObjetoNegocio().recuperarPorId(id);
-                if (entidad == null) {
-                    return FormadorMensajes.enviarEntidadNoExiste(idCargar);
-                }
                 nombreArchivoOrigen = nombreEntidad;
-                nombreAdjunto = nombreEntidad + "_" + idCargar + ".xlsx";
-            }
-        } else {
-            nombreArchivoOrigen = nombreEntidad;
-            nombreAdjunto = "plantilla_" + nombreEntidad + ".xlsx";
+                nombreAdjunto = "plantilla_" + nombreEntidad + ".xlsx";
 //            if (this instanceof IInterpretadorFormularioDasometrico) {
 //                if (cargarPlantillaFormularios) {
 //                    nombreArchivoOrigen = "plantillafrm";
 //                }
 //            }
-        }
-
-        String nombreArchivoOriginal = "plantillas/" + nombreArchivoOrigen + ".xlsx";
-        File archivoCopia = UtilitariosMensajes.reservarNombre(nombreEntidad);
-        UtilitariosMensajes.copiarArchivo(new File(nombreArchivoOriginal), archivoCopia);
-        archivosTemporales.add(archivoCopia);
-        FileInputStream fis = null;
-        OutputStream os = null;
-        try {
-            Workbook libro;
-            fis = new FileInputStream(archivoCopia);
-            libro = WorkbookFactory.create(fis);
-            hojaActual = new HojaExcelHelper(libro.getSheetAt(0));
-            if (plantillaNueva) {
-                preparPlantillaAntesDeEnviar(libro);
-            } else {
-                if (lista != null) {
-                    mostrarLista(lista);
+            }
+            String nombreArchivoOriginal = "plantillas/" + nombreArchivoOrigen + ".xlsx";
+            File archivoCopia = UtilitariosMensajes.reservarNombre(nombreEntidad);
+            UtilitariosMensajes.copiarArchivo(new File(nombreArchivoOriginal), archivoCopia);
+            archivosTemporales.add(archivoCopia);
+            FileInputStream fis = null;
+            OutputStream os = null;
+            try {
+                Workbook libro;
+                fis = new FileInputStream(archivoCopia);
+                libro = WorkbookFactory.create(fis);
+                hojaActual = new HojaExcelHelper(libro.getSheetAt(0));
+                if (plantillaNueva) {
+                    preparPlantillaAntesDeEnviar(libro);
                 } else {
-                    mostrarEntidad(entidad, libro);
+                    if (lista != null) {
+                        mostrarLista(lista);
+                    } else {
+                        mostrarEntidad(entidad, libro);
+                    }
+                }
+                if (mensajesError != null) {
+                    return FormadorMensajes.enviarErroresNegocio(mensajesError);
+                }
+                //Guardamos cambio
+                os = new FileOutputStream(archivoCopia);
+                libro.write(os);
+            } catch (InvalidFormatException ex) {
+
+            } finally {
+                if (fis != null) {
+                    fis.close();
+                }
+                if (os != null) {
+                    os.close();
                 }
             }
-            if (mensajesError != null) {
-                return FormadorMensajes.enviarErroresNegocio(mensajesError);
+            String textoMensaje;
+            if (plantillaNueva) {
+                textoMensaje = escapeHtml4("La plantilla está adjunta a este mensaje.");
+            } else if (lista != null) {
+                textoMensaje = "La consulta ha devuelto " + lista.size() + " registro(s).";
+            } else {
+                textoMensaje = escapeHtml4("El registro solicitado está adjunto a este mensaje");
             }
-            //Guardamos cambio
-            os = new FileOutputStream(archivoCopia);
-            libro.write(os);
-        } catch (InvalidFormatException ex) {
-
-        } finally {
-            if (fis != null) {
-                fis.close();
-            }
-            if (os != null) {
-                os.close();
-            }
+            Multipart cuerpo = new MimeMultipart();
+            BodyPart adjunto = new MimeBodyPart();
+            DataSource origen = new FileDataSource(archivoCopia);
+            adjunto.setDataHandler(new DataHandler(origen));
+            adjunto.setFileName(nombreAdjunto);
+            cuerpo.addBodyPart(FormadorMensajes.getBodyPartEnvuelto(textoMensaje));
+            cuerpo.addBodyPart(adjunto);
+            return cuerpo;
+        } catch (PermisosInsuficientesException ex) {
+            appendException(new BusinessExceptionMessage(ex.getMessage(), "Autentificacion"));
         }
-        String textoMensaje;
-        if (plantillaNueva) {
-            textoMensaje = escapeHtml4("La plantilla está adjunta a este mensaje.");
-        } else if (lista != null) {
-            textoMensaje = "La consulta ha devuelto " + lista.size() + " registro(s).";
-        } else {
-            textoMensaje = escapeHtml4("El registro solicitado está adjunto a este mensaje");
+        if (mensajesError != null) {
+            return FormadorMensajes.enviarErroresNegocio(mensajesError);
         }
-        Multipart cuerpo = new MimeMultipart();
-        BodyPart adjunto = new MimeBodyPart();
-        DataSource origen = new FileDataSource(archivoCopia);
-        adjunto.setDataHandler(new DataHandler(origen));
-        adjunto.setFileName(nombreAdjunto);
-        cuerpo.addBodyPart(FormadorMensajes.getBodyPartEnvuelto(textoMensaje));
-        cuerpo.addBodyPart(adjunto);
-        return cuerpo;
+        return null;
     }
 
     @Override

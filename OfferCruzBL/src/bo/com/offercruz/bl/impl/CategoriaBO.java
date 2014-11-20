@@ -38,7 +38,7 @@ public class CategoriaBO extends ObjetoNegocioGenerico<Categoria, Integer, ICate
         if (nombreValido) {
             if (entity.getId() == null) {
                 //Insercion
-                Categoria cate = getObjetoDAO().obtenerPorNombre(entity.getNombre());
+                Integer cate = getObjetoDAO().obtenerIdPorNombre(entity.getNombre());
                 if (cate != null) {
                     appendException(new BusinessExceptionMessage("La categoria '" + entity.getNombre() + "' ya existe.", "nombre"));
                 }

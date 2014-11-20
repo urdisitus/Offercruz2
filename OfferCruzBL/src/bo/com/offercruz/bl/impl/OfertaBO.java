@@ -107,9 +107,9 @@ public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO>
             if (isNullOrEmpty(entity.getCategoria().getNombre())) {
                 appendException(new BusinessExceptionMessage("La categoria es un campo requerido", "categoria"));
             } else {
-                Categoria cc = getDaoManager().getCategoriaDAO().obtenerPorNombre(entity.getCategoria().getNombre());
+                Integer cc = getDaoManager().getCategoriaDAO().obtenerIdPorNombre(entity.getCategoria().getNombre());
                 if (cc != null) {
-                    entity.getCategoria().setId(cc.getId());
+                    entity.getCategoria().setId(cc);
                 }
                 if (entity.getCategoria().getId() == null) {
                     appendException(new BusinessExceptionMessage("La categoria '" + entity.getCategoria().getNombre() + "' no existe", "categoria"));

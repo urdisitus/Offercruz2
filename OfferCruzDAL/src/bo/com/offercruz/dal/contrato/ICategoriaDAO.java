@@ -18,4 +18,5 @@ public interface ICategoriaDAO extends  IDAOGenerico<Categoria, Integer>{
     List<Categoria> obtenerTodasbyTipo(TipoOferta tipoOferta);      
     Categoria obtenerPorNombre(String nombre, Integer id);
     Categoria obtenerPorNombre(String nombre);
+    Integer obtenerIdPorNombre(String nombre);
 }

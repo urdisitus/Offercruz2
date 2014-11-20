@@ -59,6 +59,8 @@ public class InterpretadorMensajePerfil extends InterpretadorMensajeGenerico<Per
     @Override
     protected void preparPlantillaAntesDeEnviar(Workbook libro) {
         IPermisoBO permisoBO = FactoriaObjetosNegocio.getInstance().getIPermisoBO();
+        permisoBO.setComandoPermiso(nombreEntidad);
+        permisoBO.setIdUsuario(idUsuario);
         List<Permiso> pers = permisoBO.obtenerTodos();
         String[] permisos = new String[pers.size()];
         for (int j = 0; j < pers.size(); j++) {

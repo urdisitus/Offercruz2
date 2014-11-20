@@ -11,12 +11,17 @@ import bo.com.offercruz.bl.excepticiones.BusinessExceptionMessage;
 import static bo.com.offercruz.bl.impl.UsuarioBO.SHA256;
 import static bo.com.offercruz.bl.impl.UsuarioBO.getStringMessageDigest;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
+import bo.com.offercruz.dal.contrato.ICategoriaDAO;
 import bo.com.offercruz.dal.contrato.IEmpresaDAO;
 import bo.com.offercruz.dal.contrato.IUsuarioDAO;
+import bo.com.offercruz.dal.imp.control.FactoriaDAOManager;
+import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.entidades.Empresa;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Usuario;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +52,7 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
             nombreValido = false;
         }
         if (nombreValido) {
-            Empresa emp = getObjetoDAO().obtenerPorNombre(entity.getRazonSocial());
+            Integer emp = getObjetoDAO().obtenerIdPorNombre(entity.getRazonSocial());
             if (emp != null) {
                 appendException(new BusinessExceptionMessage("La empresa '" + entity.getRazonSocial() + "' ya existe.", "nombre"));
             }
@@ -85,6 +90,33 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         }
 
         // VALIDAR FECHA
+        
+        //Permisos 
+        if (entity.getCategorias().isEmpty()) {
+            appendException(new BusinessExceptionMessage("La empresa debe tener una o mas categorias asignadas.", "categorias"));
+        } else {
+            Set nuevosPermisos = new HashSet();
+            for (Object permiso : entity.getCategorias()) {
+                Categoria p = (Categoria) permiso;
+                boolean existe = false;
+                for (Object object : nuevosPermisos) {
+                    Categoria pp = (Categoria) object;
+                    if (pp.getNombre().equals(p.getNombre())) {
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe) {
+                    nuevosPermisos.add(p);
+                }
+            }
+            entity.setCategorias(nuevosPermisos);
+            ICategoriaDAO permisoDAO = FactoriaDAOManager.getDAOManager().getCategoriaDAO();
+            for (Object object : nuevosPermisos) {
+                Categoria pp = (Categoria) object;
+                pp.setId(permisoDAO.obtenerIdPorNombre(pp.getNombre()));
+            }
+        }
     }
 
     @Override
@@ -103,8 +135,7 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         user.setFechaCreacion(new Date());
         user.setFechaModificacion(new Date());
         user.setPassword(encriptar(UsuarioBO.cadenaAleatoria(15)));
-        objUsuario.persistir(user);
-        entidad.setUsuario(user);
+        entidad.setUsuario(objUsuario.persistir(user));
     }
     
     public String encriptar(String texto) {
@@ -115,6 +146,7 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
     protected void preActualizar(Empresa entidad) {
        // IUsuarioDAO 
         entidad.setFechaModificacion(new Date());
+        
     }
 
 }

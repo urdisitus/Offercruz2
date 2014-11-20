@@ -5,8 +5,10 @@
  */
 package bo.com.offercruzmail.imp;
 
+import bo.com.offercruz.bl.contratos.IPerfilBO;
 import bo.com.offercruz.bl.contratos.IUsuarioBO;
 import bo.com.offercruz.bl.impl.control.FactoriaObjetosNegocio;
+import bo.com.offercruz.dal.contrato.IPerfilDAO;
 import bo.com.offercruz.entidades.Perfil;
 import bo.com.offercruz.entidades.Usuario;
 import java.util.List;
@@ -62,7 +64,11 @@ public class InterpretadorMensajeUsuario
 
     @Override
     protected void preparPlantillaAntesDeEnviar(Workbook libro) {
-        List<Perfil> perfiles = FactoriaObjetosNegocio.getInstance().getIPerfilBO().obtenerTodos();
+        IPerfilBO perfilBO = FactoriaObjetosNegocio.getInstance().getIPerfilBO();
+        perfilBO.setComandoPermiso(nombreEntidad);
+        perfilBO.setIdUsuario(idUsuario);
+        List<Perfil> perfiles = perfilBO.obtenerTodos();
+        
         String[] descripciones = new String[perfiles.size()];
         for (int i = 0; i < perfiles.size(); i++) {
             descripciones[i] = perfiles.get(i).getNombre();
