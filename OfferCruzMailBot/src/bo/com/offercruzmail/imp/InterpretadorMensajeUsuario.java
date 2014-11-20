@@ -21,6 +21,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -60,7 +61,7 @@ public class InterpretadorMensajeUsuario
     }
 
     @Override
-    protected void preparPlantillaAntesDeEnviar() {
+    protected void preparPlantillaAntesDeEnviar(Workbook libro) {
         List<Perfil> perfiles = FactoriaObjetosNegocio.getInstance().getIPerfilBO().obtenerTodos();
         String[] descripciones = new String[perfiles.size()];
         for (int i = 0; i < perfiles.size(); i++) {
@@ -104,8 +105,8 @@ public class InterpretadorMensajeUsuario
     }
 
     @Override
-    void mostrarEntidad(Usuario entidad) {
-        preparPlantillaAntesDeEnviar();
+    void mostrarEntidad(Usuario entidad, Workbook libro) {
+        preparPlantillaAntesDeEnviar(libro);
         hojaActual.setValorCelda(3, 2, entidad.getId());
         hojaActual.setValorCelda(4, 2, entidad.getLogin());
         if (entidad.getPerfil() != null){

@@ -11,6 +11,7 @@ import bo.com.offercruz.entidades.Categoria;
 import bo.com.offercruz.enums.TipoOferta;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -48,7 +49,7 @@ public class InterpretadorMensajeCategoria extends InterpretadorMensajeGenerico<
     }
 
     @Override
-    protected void preparPlantillaAntesDeEnviar() {
+    protected void preparPlantillaAntesDeEnviar(Workbook libro) {
         String[] descripciones = new String[TipoOferta.values().length];
         for (int i = 0; i < TipoOferta.values().length; i++) {
             descripciones[i] = TipoOferta.values()[i].toString();
@@ -88,8 +89,8 @@ public class InterpretadorMensajeCategoria extends InterpretadorMensajeGenerico<
     }
 
     @Override
-    void mostrarEntidad(Categoria entidad) {
-        preparPlantillaAntesDeEnviar();
+    void mostrarEntidad(Categoria entidad, Workbook libro) {
+        preparPlantillaAntesDeEnviar(libro);
         hojaActual.setValorCelda(3, 2, entidad.getId());
         hojaActual.setValorCelda(4, 2, entidad.getNombre());
         hojaActual.setValorCelda(5, 2, TipoOferta.values()[entidad.getTipo()].toString());

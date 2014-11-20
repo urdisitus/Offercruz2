@@ -163,9 +163,7 @@ public class UsuarioBO extends ObjetoNegocioGenerico<Usuario, Integer, IUsuarioD
     @Override
     protected void preActualizar(Usuario entidad) {
         entidad.setFechaModificacion(new Date());
-    }
-    
-    
+    }      
 
     @Override
     protected void preInsertar(Usuario entidad) {

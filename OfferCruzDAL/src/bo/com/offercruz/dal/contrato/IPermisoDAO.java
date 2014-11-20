@@ -13,5 +13,5 @@ import bo.com.offercruz.entidades.Permiso;
  * @author Ernesto
  */
 public interface IPermisoDAO extends IDAOGenerico<Permiso, Integer> {
-    Integer getIdPorNombre(String nombre);
+    Integer getIdPorNombre(String nombre);    
 }

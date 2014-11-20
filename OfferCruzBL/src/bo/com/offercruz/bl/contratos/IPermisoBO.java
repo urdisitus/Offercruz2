@@ -12,6 +12,6 @@ import bo.com.offercruz.entidades.Permiso;
  *
  * @author Ernesto
  */
-public interface IPermisoBO extends  IGenericoBO<Permiso, Integer>{
+public interface IPermisoBO extends  IGenericoBO<Permiso, Integer>{    
     
 }

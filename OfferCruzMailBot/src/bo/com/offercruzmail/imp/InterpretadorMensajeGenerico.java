@@ -65,7 +65,7 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
 //            mapa.put("extraccion", new InterpretadorMensajeExtraccion());
 //            mapa.put("despacho", new InterpretadorMensajeMovimiento());
 //            mapa.put("dasometrico", new InterpretarPlantillaFormulario());
-//
+            mapa.put("perfil", new InterpretadorMensajePerfil());
             mapa.put("categoria", new InterpretadorMensajeCategoria());
             mapa.put("usuario", new InterpretadorMensajeUsuario());
 //
@@ -188,12 +188,12 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
             libro = WorkbookFactory.create(fis);
             hojaActual = new HojaExcelHelper(libro.getSheetAt(0));
             if (plantillaNueva) {
-                preparPlantillaAntesDeEnviar();
+                preparPlantillaAntesDeEnviar(libro);
             } else {
                 if (lista != null) {
                     mostrarLista(lista);
                 } else {
-                    mostrarEntidad(entidad);
+                    mostrarEntidad(entidad, libro);
                 }
             }
             //Guardamos cambio
@@ -281,7 +281,7 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
         return new Integer(cadena);
     }
 
-    protected void preparPlantillaAntesDeEnviar() {
+    protected void preparPlantillaAntesDeEnviar(Workbook libro) {
 
     }
 
@@ -321,6 +321,6 @@ public abstract class InterpretadorMensajeGenerico<T, ID extends Serializable, B
 
     abstract void mostrarLista(List<T> lista);
 
-    abstract void mostrarEntidad(T entidad);
+    abstract void mostrarEntidad(T entidad, Workbook libro);
 
 }
