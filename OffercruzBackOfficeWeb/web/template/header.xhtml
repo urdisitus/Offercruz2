@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <body>
+        <ui:composition>
+            <h:panelGrid columns="1"  style="text-align: center;height: 100px;  background-color: #459E00; width: 100%; font-size: 48px; color: white" >
+                EFIC Web System
+            </h:panelGrid>
+            <h:form id="menuForm"> 
+                <p:menubar id="mainmenu">  
+                    <p:menuitem value="Inicio"  url="/index.xhtml" />
+<!--                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de lugares">
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10104)}" value="&Aacute;reas"  url="/gestion/lugares/area.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10704)}" value="Fajas"  url="/gestion/lugares/faja.xhtml" />
+                        
+                    </p:submenu>
+                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de trozas">
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10304)}"  value="Especies"  url="/gestion/trozas/especie.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10604)}" value="Cargas"  url="/gestion/trozas/carga.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10204)}" value="Calidades"  url="/gestion/trozas/calidad.xhtml" />
+                    </p:submenu>
+                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de procesos">
+                       
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10402)}" value="Censo"  url="/gestion/procesos/censo.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(10502)}" value="Tala"  url="/gestion/procesos/tala.xhtml" />
+                        
+                    </p:submenu>
+                    <p:submenu rendered="#{loginBean.loggedIn}" label="Gesti&oacute;n de usuarios">
+                       
+                        <p:menuitem  rendered="#{loginBean.verificarPermiso(20103)}" value="Roles"  url="/gestion/usuarios/roles.xhtml" />
+                        <p:menuitem rendered="#{loginBean.verificarPermiso(20003)}" value="Usuarios"  url="/gestion/usuarios/usuarios.xhtml" />
+                        
+                    </p:submenu>
+                    <p:menuitem value="Iniciar Sesi&oacute;n" rendered="#{!loginBean.loggedIn}"  url="/login.xhtml" />
+                    <p:menuitem value="Cerrar Sesi&oacute;n" rendered="#{loginBean.loggedIn}" url="/closelogin.xhtml"/>-->
+                </p:menubar>  
+            </h:form>
+            <br/>
+        </ui:composition>
+    </body>
+</html>
