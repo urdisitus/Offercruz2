@@ -132,6 +132,7 @@ public class EmpresaBO extends ObjetoNegocioGenerico<Empresa, Integer, IEmpresaD
         user.setLogin(entidad.getRazonSocial().replaceAll(" ", ""));
         user.setCorreoElectronico(entidad.getCorreoElectronico());
         user.setTipo(2);
+        user.setEstado(1);
         user.setFechaCreacion(new Date());
         user.setFechaModificacion(new Date());
         user.setPassword(encriptar(UsuarioBO.cadenaAleatoria(15)));

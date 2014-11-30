@@ -38,18 +38,29 @@ public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO>
 
             @Override
             public Empresa call() throws Exception {
-                return getDaoManager().getEmpresaDAO().obtenerEmpresa(idUsuario);
+                Empresa emp = getDaoManager().getEmpresaDAO().obtenerEmpresa(idUsuario);
+                for (Object cat : emp.getCategorias()) {
+                    Categoria c = (Categoria) cat;
+                    System.out.println(c.getNombre());
+                }
+                return emp;
             }
         });
     }
-    
-        @Override
+
+    @Override
     public List<Oferta> obtenerTodos() {
         List<Oferta> ofertas = new ArrayList<Oferta>();
         if (empresa == null) {
             ofertas.addAll(super.obtenerTodos());
         } else {
-            ofertas.addAll(getObjetoDAO().obtenerTodas(empresa.getId()));
+            ofertas.addAll(ejecutarEnTransaccion(new Callable<List<Oferta>>() {
+
+                @Override
+                public List<Oferta> call() throws Exception {
+                    return getObjetoDAO().obtenerTodas(empresa.getId());
+                }
+            }));
         }
         return ofertas;
     }
@@ -117,11 +128,12 @@ public class OfertaBO extends ObjetoNegocioGenerico<Oferta, Integer, IOfertaDAO>
             }
         }
 
+        entity.setEmpresa(empresa);
         //Empresa 
         if (entity.getEmpresa() == null) {
             appendException(new BusinessExceptionMessage("La empresa es un campo requerido", "empresa"));
         } else {
-            if (!esActualizacion) {
+            if (esActualizacion) {
                 //Actualizacion
                 Oferta of = getObjetoDAO().obtenerPorId(entity.getId());
                 if (!Objects.equals(of.getEmpresa().getId(), entity.getEmpresa().getId())) {

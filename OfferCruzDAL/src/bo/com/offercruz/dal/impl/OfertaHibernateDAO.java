@@ -28,7 +28,7 @@ public class OfertaHibernateDAO extends DAOGenericoHibernate<Oferta, Integer> im
 
     @Override
     public List<Oferta> obtenerTodas(Integer empresa) {
-        Query query = getSession().createQuery("from Oferta r WHERE r.idEmpresa = :empresa");
+        Query query = getSession().createQuery("SELECT r from Oferta r join r.empresa e WHERE e.id = :empresa");
         query.setParameter("empresa", empresa);
         List<Oferta> ofertas = query.list();
         for (Oferta oferta : ofertas) {
