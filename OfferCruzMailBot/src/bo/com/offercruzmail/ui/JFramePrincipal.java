@@ -60,10 +60,9 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
         jTextAreaLog = new javax.swing.JTextArea();
         jButtonLimpiar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Administrador de correos KIBO");
+        setTitle("Administrador de correos OfferCruz");
         setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("resources/img/mail32.png")));
 
         jButtonIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/img/ejecutar32x32.png"))); // NOI18N
@@ -75,7 +74,7 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
         });
 
         jLabel1.setFont(new java.awt.Font("Traditional Arabic", 1, 18)); // NOI18N
-        jLabel1.setText("Lector de Bandeja de entrada KIBO");
+        jLabel1.setText("Lector de Bandeja de entrada OfferCruz");
 
         jButtonParar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/img/stop32.png"))); // NOI18N
         jButtonParar.setText("Parar");
@@ -114,13 +113,6 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
             }
         });
 
-        jButton2.setText("jButton2");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -137,9 +129,7 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton2)
-                                .addGap(25, 25, 25)
+                                .addGap(108, 108, 108)
                                 .addComponent(jButtonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,8 +154,7 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonIniciar)
                             .addComponent(jButtonParar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))
+                            .addComponent(jButtonConfigurar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -176,6 +165,8 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jLabel1.getAccessibleContext().setAccessibleName("Lector de Bandeja de entrada OfferCruz");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -214,11 +205,6 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:       
-        bandeja.enviar();
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     /**
@@ -265,7 +251,6 @@ public class JFramePrincipal extends javax.swing.JFrame implements ILectorBandej
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonConfigurar;
     private javax.swing.JButton jButtonIniciar;
     private javax.swing.JButton jButtonLimpiar;
